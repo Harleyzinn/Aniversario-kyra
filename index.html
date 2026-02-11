@@ -3,66 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Kyra ✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Kyra | Level 12 ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --primary: #00897b; --secondary: #4db6ac; --accent: #ff6f61; --bg: #e0f7fa; --paper: #ffffff; --text: #37474f; }
+        :root {
+            --bg: #0f172a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #fbbf24; /* Ouro */
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg); font-family: 'Poppins', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; perspective: 1000px; }
-        .envelope-wrapper { position: relative; cursor: pointer; transition: transform 0.5s ease; }
-        .envelope { position: relative; width: 320px; height: 220px; background: var(--secondary); border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; box-shadow: 0 15px 30px rgba(0,137,123,0.3); }
-        .envelope::before { content: ""; position: absolute; top: 0; z-index: 2; border-top: 120px solid var(--primary); border-left: 160px solid transparent; border-right: 160px solid transparent; transform-origin: top; transition: transform 0.6s ease; }
-        .envelope::after { content: ""; position: absolute; top: 0; width: 0; height: 0; border-top: 110px solid transparent; border-left: 160px solid var(--secondary); border-right: 160px solid var(--secondary); border-bottom: 110px solid var(--secondary); z-index: 3; border-radius: 0 0 10px 10px; }
-        .letter { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); width: 90%; height: 80%; background: var(--paper); padding: 20px; z-index: 1; transition: transform 0.6s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-radius: 5px; }
-        .letter h2 { font-family: 'Dancing Script', cursive; color: var(--accent); font-size: 1.6rem; }
-        .envelope-wrapper.open .envelope::before { transform: rotateX(180deg); z-index: 0; }
-        .envelope-wrapper.open .letter { transform: translate(-50%, -130px); height: 200%; z-index: 4; }
-        #full-message { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); z-index: 10; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 30px; color: var(--text); }
-        .poem-content { max-width: 550px; font-size: 1.15rem; line-height: 1.7; text-align: center; }
-        .poem-content h1 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--accent); margin-bottom: 30px; }
-        .btn-viva { margin-top: 40px; padding: 12px 40px; background: var(--accent); color: white; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .divider { width: 50px; height: 3px; background: var(--primary); margin: 25px auto; border-radius: 10px; opacity: 0.3; }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        }
+
+        /* Partículas de Fundo (Estrelas) */
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Cartão Principal */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step { display: none; animation: fadeIn 1s ease forwards; }
+        .step.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--accent); margin-bottom: 1rem; }
+        p { line-height: 1.8; color: var(--text-dim); font-weight: 300; }
+
+        /* Botão Estilizado */
+        .btn {
+            margin-top: 30px;
+            padding: 12px 32px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .btn:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+
+        /* O Envelope Minimalista */
+        .envelope-svg { width: 80px; height: 80px; fill: var(--accent); margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.3)); }
+
+        /* Divider */
+        .hr { width: 40px; height: 2px; background: var(--accent); margin: 20px auto; border: none; opacity: 0.5; }
+
+        /* Estilo da Poesia */
+        .poem { font-style: italic; font-size: 1.1rem; color: var(--text-main); line-height: 2; }
     </style>
 </head>
 <body>
-    <div class="envelope-wrapper" id="envelopeWrapper">
-        <div class="envelope">
-            <div class="letter"><h2>Para Kyra</h2><p>Um presente especial...</p></div>
+
+    <div class="stars" id="starContainer"></div>
+
+    <div class="card" id="mainCard">
+        <div class="step active" id="step1">
+            <svg class="envelope-svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <h1>Kyra</h1>
+            <p>Um novo ciclo se inicia hoje.<br>Você está pronta para desbloquear o seu presente?</p>
+            <button class="btn" onclick="nextStep(2)">INICIAR</button>
+        </div>
+
+        <div class="step" id="step2">
+            <p style="color: var(--accent); font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 10px;">CAPÍTULO I</p>
+            <div class="poem" id="poemText"></div>
+            <button class="btn" onclick="nextStep(3)">CONTINUAR</button>
+        </div>
+
+        <div class="step" id="step3">
+            <h1>Feliz 12 Anos!</h1>
+            <div class="hr"></div>
+            <p>Que sua jornada seja repleta de aventuras,<br>e que você nunca perca essa sua luz única.</p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">Com amor, seu irmão.</p>
+            <button class="btn" onclick="celebrate()">CELEBRAR 🎉</button>
         </div>
     </div>
-    <div id="full-message">
-        <div class="poem-content">
-            <h1 id="title"></h1>
-            <p id="p1"></p>
-            <div class="divider"></div>
-            <p id="p2"></p>
-            <button class="btn-viva" onclick="triggerConfetti()">Feliz 12 Anos! 🎉</button>
-        </div>
-    </div>
+
     <script>
-        const wrapper = document.getElementById('envelopeWrapper');
-        const modal = document.getElementById('full-message');
-        const t1 = "Kyra, meus parabéns!";
-        const part1 = "O mundo lá fora faz muito barulho e tenta confundir o caminho, mas a nossa conexão é a bússola, o farol que nunca me deixa sozinho. Escrevo estes versos não com tinta, mas com o carinho que trago no peito, para celebrar a doçura e a força incrível que crescem em ti, do teu jeito.";
-        const part2 = "Doze primaveras completas hoje, e a tua luz se torna ainda mais forte. Uma jornada linda começa agora, e eu estarei sempre aqui como teu suporte. Que a alegria seja teu guia e que nunca te falte a coragem de ser quem tu és. Serei sempre teu escudo e apoio, da cabeça aos pés.";
-        wrapper.addEventListener('click', () => {
-            wrapper.classList.add('open');
-            setTimeout(() => {
-                modal.style.display = 'flex';
-                typeWriter(document.getElementById('title'), t1, 70, () => {
-                    typeWriter(document.getElementById('p1'), part1, 35, () => {
-                        typeWriter(document.getElementById('p2'), part2, 35);
-                    });
-                });
-            }, 1200);
-        });
-        function typeWriter(el, text, speed, cb) {
+        // Gerador de Estrelas
+        const container = document.getElementById('starContainer');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.style.position = 'absolute';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.background = 'white';
+            star.style.borderRadius = '50%';
+            star.style.opacity = Math.random();
+            container.appendChild(star);
+        }
+
+        const poem = "O tempo é um artesão silencioso,\ne hoje ele esculpe em ti um novo brilho.\nNão és mais apenas a pequena que eu vi crescer,\nmas a jovem que começa a trilhar seu próprio trilho.\n\nQue a coragem seja tua bússola,\ne que o afeto que nos une seja tua proteção.\nSigo aqui, como sempre estive,\nguardando teus passos no fundo do coração.";
+
+        function nextStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            
+            if (step === 2) {
+                typeWriter(document.getElementById('poemText'), poem, 30);
+            }
+        }
+
+        function typeWriter(el, text, speed) {
             let i = 0;
-            function type() { if (i < text.length) { el.innerHTML += text.charAt(i); i++; setTimeout(type, speed); } else if (cb) cb(); }
+            el.innerHTML = "";
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
             type();
         }
-        function triggerConfetti() { confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#ff6f61', '#00897b', '#ffffff', '#ffd700'] }); }
+
+        function celebrate() {
+            const count = 200;
+            const defaults = { origin: { y: 0.7 }, zIndex: 999 };
+
+            function fire(particleRatio, opts) {
+                confetti({ ...defaults, ...opts, particleCount: Math.floor(count * particleRatio) });
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+            fire(0.1, { spread: 120, startVelocity: 45 });
+        }
     </script>
 </body>
 </html>
