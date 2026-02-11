@@ -11,7 +11,7 @@
             --bg: #0f172a;
             --glass: rgba(255, 255, 255, 0.05);
             --border: rgba(255, 255, 255, 0.1);
-            --accent: #fbbf24; /* Ouro */
+            --accent: #fbbf24;
             --text-main: #f8fafc;
             --text-dim: #94a3b8;
         }
@@ -26,11 +26,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            /* CORREÇÃO AQUI: Permitir scroll vertical e adicionar respiro nas bordas */
+            overflow-x: hidden;
+            overflow-y: auto; 
+            padding: 50px 0; 
             background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            background-attachment: fixed;
         }
 
-        /* Partículas de Fundo (Estrelas) */
         .stars {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -38,52 +41,49 @@
             pointer-events: none;
         }
 
-        /* Cartão Principal */
         .card {
             background: var(--glass);
             backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 40px;
+            padding: 40px 20px;
             width: 90%;
             max-width: 500px;
             text-align: center;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: auto; /* Garante centralização no scroll */
         }
 
-        .step { display: none; animation: fadeIn 1s ease forwards; }
+        .step { display: none; animation: fadeIn 0.8s ease forwards; }
         .step.active { display: block; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--accent); margin-bottom: 1rem; }
-        p { line-height: 1.8; color: var(--text-dim); font-weight: 300; }
+        h1 { font-family: 'Dancing Script', cursive; font-size: clamp(2.5rem, 8vw, 3.5rem); color: var(--accent); margin-bottom: 1rem; }
+        p { line-height: 1.8; color: var(--text-dim); font-weight: 300; font-size: 1.05rem; }
 
-        /* Botão Estilizado */
         .btn {
             margin-top: 30px;
-            padding: 12px 32px;
+            padding: 15px 35px;
             background: transparent;
-            border: 1px solid var(--accent);
+            border: 2px solid var(--accent);
             color: var(--accent);
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            letter-spacing: 1px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             transition: 0.3s;
         }
 
         .btn:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
 
-        /* O Envelope Minimalista */
-        .envelope-svg { width: 80px; height: 80px; fill: var(--accent); margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.3)); }
+        .envelope-svg { width: 60px; height: 60px; fill: var(--accent); margin-bottom: 20px; opacity: 0.8; }
 
-        /* Divider */
-        .hr { width: 40px; height: 2px; background: var(--accent); margin: 20px auto; border: none; opacity: 0.5; }
+        .hr { width: 60px; height: 2px; background: var(--accent); margin: 25px auto; border: none; opacity: 0.4; }
 
-        /* Estilo da Poesia */
-        .poem { font-style: italic; font-size: 1.1rem; color: var(--text-main); line-height: 2; }
+        .poem { font-style: italic; font-size: 1.15rem; color: var(--text-main); line-height: 2; white-space: pre-line; text-align: center; }
     </style>
 </head>
 <body>
@@ -94,53 +94,56 @@
         <div class="step active" id="step1">
             <svg class="envelope-svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             <h1>Kyra</h1>
-            <p>Um novo ciclo se inicia hoje.<br>Você está pronta para desbloquear o seu presente?</p>
+            <p>Um novo ciclo se inicia hoje.<br>Estás pronta para desbloquear o teu presente?</p>
             <button class="btn" onclick="nextStep(2)">INICIAR</button>
         </div>
 
         <div class="step" id="step2">
-            <p style="color: var(--accent); font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 10px;">CAPÍTULO I</p>
+            <p style="color: var(--accent); font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 15px; text-transform: uppercase;">Capítulo I</p>
             <div class="poem" id="poemText"></div>
-            <button class="btn" onclick="nextStep(3)">CONTINUAR</button>
+            <button class="btn" id="btnStep2" style="display:none;" onclick="nextStep(3)">CONTINUAR</button>
         </div>
 
         <div class="step" id="step3">
             <h1>Feliz 12 Anos!</h1>
             <div class="hr"></div>
-            <p>Que sua jornada seja repleta de aventuras,<br>e que você nunca perca essa sua luz única.</p>
-            <p style="margin-top: 20px; font-size: 0.9rem;">Com amor, seu irmão.</p>
+            <p>Que a tua jornada seja repleta de aventuras e que nunca percas essa tua luz única.</p>
+            <p style="margin-top: 25px; font-weight: 600; color: var(--text-main);">Com amor, do teu irmão.</p>
             <button class="btn" onclick="celebrate()">CELEBRAR 🎉</button>
         </div>
     </div>
 
     <script>
-        // Gerador de Estrelas
+        // Estrelas de fundo
         const container = document.getElementById('starContainer');
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 80; i++) {
             const star = document.createElement('div');
             star.style.position = 'absolute';
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
-            star.style.width = Math.random() * 3 + 'px';
+            star.style.width = Math.random() * 2 + 1 + 'px';
             star.style.height = star.style.width;
             star.style.background = 'white';
             star.style.borderRadius = '50%';
-            star.style.opacity = Math.random();
+            star.style.opacity = Math.random() * 0.8;
             container.appendChild(star);
         }
 
-        const poem = "O tempo é um artesão silencioso,\ne hoje ele esculpe em ti um novo brilho.\nNão és mais apenas a pequena que eu vi crescer,\nmas a jovem que começa a trilhar seu próprio trilho.\n\nQue a coragem seja tua bússola,\ne que o afeto que nos une seja tua proteção.\nSigo aqui, como sempre estive,\nguardando teus passos no fundo do coração.";
+        const poem = "O tempo é um artesão silencioso,\ne hoje ele esculpe em ti um novo brilho.\nNão és mais apenas a pequena que eu vi crescer,\nmas a jovem que começa a trilhar o seu próprio trilho.\n\nQue a coragem seja a tua bússola,\ne que o afeto que nos une seja a tua proteção.\nSigo aqui, como sempre estive,\nguardando os teus passos no fundo do coração.";
 
         function nextStep(step) {
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Volta ao topo do card na troca
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step' + step).classList.add('active');
             
             if (step === 2) {
-                typeWriter(document.getElementById('poemText'), poem, 30);
+                typeWriter(document.getElementById('poemText'), poem, 40, () => {
+                    document.getElementById('btnStep2').style.display = 'inline-block';
+                });
             }
         }
 
-        function typeWriter(el, text, speed) {
+        function typeWriter(el, text, speed, callback) {
             let i = 0;
             el.innerHTML = "";
             function type() {
@@ -148,6 +151,8 @@
                     el.innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
                     i++;
                     setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
                 }
             }
             type();
@@ -156,11 +161,9 @@
         function celebrate() {
             const count = 200;
             const defaults = { origin: { y: 0.7 }, zIndex: 999 };
-
             function fire(particleRatio, opts) {
                 confetti({ ...defaults, ...opts, particleCount: Math.floor(count * particleRatio) });
             }
-
             fire(0.25, { spread: 26, startVelocity: 55 });
             fire(0.2, { spread: 60 });
             fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
