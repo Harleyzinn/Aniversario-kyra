@@ -3,147 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kyra | Level 12 ✨</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Protocolo KYRA_12 📂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@300;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg: #0f172a;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
-            --accent: #fbbf24;
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
+            --bg: #0a0a0c;
+            --accent: #d4af37; /* Ouro envelhecido */
+            --text: #e2e8f0;
+            --dim: #64748b;
+            --glass: rgba(15, 15, 20, 0.9);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: var(--bg);
-            color: var(--text-main);
-            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Crimson Text', serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            /* CORREÇÃO AQUI: Permitir scroll vertical e adicionar respiro nas bordas */
-            overflow-x: hidden;
+            align-items: flex-start;
+            /* Scroll ativo e suavizado */
             overflow-y: auto; 
-            padding: 50px 0; 
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            padding: 60px 20px;
+            background-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0c 100%);
             background-attachment: fixed;
         }
 
-        .stars {
+        /* Efeito de Scanline (linhas de monitor antigo) */
+        body::before {
+            content: " ";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 10;
+            background-size: 100% 3px, 3px 100%;
             pointer-events: none;
         }
 
-        .card {
+        .container {
+            width: 100%;
+            max-width: 600px;
             background: var(--glass);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 40px 20px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            margin: auto; /* Garante centralização no scroll */
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 4px;
+            padding: 40px 30px;
+            position: relative;
+            z-index: 5;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+            margin-bottom: 40px;
         }
 
-        .step { display: none; animation: fadeIn 0.8s ease forwards; }
+        .system-header {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+            padding-bottom: 15px;
+            opacity: 0.8;
+        }
+
+        .step { display: none; animation: fadeIn 1s ease forwards; }
         .step.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 { font-family: 'Dancing Script', cursive; font-size: clamp(2.5rem, 8vw, 3.5rem); color: var(--accent); margin-bottom: 1rem; }
-        p { line-height: 1.8; color: var(--text-dim); font-weight: 300; font-size: 1.05rem; }
-
-        .btn {
-            margin-top: 30px;
-            padding: 15px 35px;
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: 0.3s;
+        h1 { font-size: 2.5rem; margin-bottom: 25px; color: var(--accent); font-weight: 400; letter-spacing: -1px; }
+        
+        .poem-body {
+            font-size: 1.3rem;
+            line-height: 1.9;
+            font-style: italic;
+            white-space: pre-line;
+            margin-bottom: 35px;
+            color: var(--text);
         }
 
-        .btn:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+        .meta-text {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--dim);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
 
-        .envelope-svg { width: 60px; height: 60px; fill: var(--accent); margin-bottom: 20px; opacity: 0.8; }
+        .btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 14px 28px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.4s;
+            display: inline-block;
+            text-decoration: none;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-        .hr { width: 60px; height: 2px; background: var(--accent); margin: 25px auto; border: none; opacity: 0.4; }
+        .btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
 
-        .poem { font-style: italic; font-size: 1.15rem; color: var(--text-main); line-height: 2; white-space: pre-line; text-align: center; }
+        .chapter-title { 
+            color: var(--accent); 
+            font-family: 'Fira Code', monospace; 
+            font-size: 0.9rem; 
+            margin-bottom: 15px;
+            display: block;
+            border-left: 3px solid var(--accent);
+            padding-left: 10px;
+        }
+
+        /* Estilo para garantir que o scroll funcione bem em mobile */
+        @media (max-width: 480px) {
+            h1 { font-size: 2rem; }
+            .poem-body { font-size: 1.15rem; }
+            .container { padding: 25px 20px; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="stars" id="starContainer"></div>
+    <div class="container">
+        <div class="system-header">Initializing_Protocol_Kyra_V.12 // Decrypting_Memories...</div>
 
-    <div class="card" id="mainCard">
         <div class="step active" id="step1">
-            <svg class="envelope-svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            <h1>Kyra</h1>
-            <p>Um novo ciclo se inicia hoje.<br>Estás pronta para desbloquear o teu presente?</p>
-            <button class="btn" onclick="nextStep(2)">INICIAR</button>
+            <div class="meta-text">> Origem: Adrian<br>> Destino: Kyra<br>> Status: 12 invernos processados</div>
+            <h1>O Alvorecer</h1>
+            <p class="poem-body">O tempo não pede permissão para passar, 
+            ele apenas redesenha o mundo enquanto piscamos.
+            Hoje, o sistema reconhece uma nova fase. 
+            Estás pronta para o acesso?</p>
+            <button class="btn" onclick="nextStep(2)">[ DESBLOQUEAR_ARQUIVOS ]</button>
         </div>
 
         <div class="step" id="step2">
-            <p style="color: var(--accent); font-size: 0.7rem; letter-spacing: 3px; margin-bottom: 15px; text-transform: uppercase;">Capítulo I</p>
-            <div class="poem" id="poemText"></div>
-            <button class="btn" id="btnStep2" style="display:none;" onclick="nextStep(3)">CONTINUAR</button>
+            <span class="chapter-title">CAPÍTULO I: O ECO DO VAZIO</span>
+            <div class="poem-body" id="text1"></div>
+            
+            <div id="cap2-area" style="display:none; margin-top: 50px;">
+                <span class="chapter-title">CAPÍTULO II: A ARQUITETURA</span>
+                <div class="poem-body" id="text2"></div>
+            </div>
+            
+            <button class="btn" id="btnStep2" style="display:none;" onclick="nextStep(3)">[ SEGUIR_PARA_O_VOTO ]</button>
         </div>
 
         <div class="step" id="step3">
-            <h1>Feliz 12 Anos!</h1>
-            <div class="hr"></div>
-            <p>Que a tua jornada seja repleta de aventuras e que nunca percas essa tua luz única.</p>
-            <p style="margin-top: 25px; font-weight: 600; color: var(--text-main);">Com amor, do teu irmão.</p>
-            <button class="btn" onclick="celebrate()">CELEBRAR 🎉</button>
+            <span class="chapter-title">CAPÍTULO III: O VOTO DO ESCUDO</span>
+            <div class="poem-body" id="text3"></div>
+            <button class="btn" id="btnFinal" style="display:none;" onclick="nextStep(4)">[ FINALIZAR_PROTOCOLO ]</button>
+        </div>
+
+        <div class="step" id="step4">
+            <h1>Level 12 Ativo.</h1>
+            <div class="meta-text">Log: Proteção em tempo real ativada.<br>Integridade emocional confirmada.</div>
+            <p class="poem-body">Feliz aniversário, Kyra. 
+            Que a tua luz nunca oscile, mesmo nos momentos de vácuo.
+            Eu estarei sempre aqui para garantir que o teu sistema nunca falhe.</p>
+            
+            <div class="meta-text" style="margin-top: 40px; border-top: 1px solid rgba(212, 175, 55, 0.1); padding-top: 20px;">
+                -- Autorizado por: ADRIAN // ADMIN_PROT_K12
+            </div>
+            
+            <button class="btn" onclick="celebrate()">[ EXECUTAR_CELEBRAÇÃO ]</button>
         </div>
     </div>
 
     <script>
-        // Estrelas de fundo
-        const container = document.getElementById('starContainer');
-        for (let i = 0; i < 80; i++) {
-            const star = document.createElement('div');
-            star.style.position = 'absolute';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.width = Math.random() * 2 + 1 + 'px';
-            star.style.height = star.style.width;
-            star.style.background = 'white';
-            star.style.borderRadius = '50%';
-            star.style.opacity = Math.random() * 0.8;
-            container.appendChild(star);
-        }
+        // Conteúdo poético trabalhado
+        const p1 = "Maldito seja o silêncio que tenta preencher o espaço entre as horas,\npois ele nunca será capaz de calar o brilho que tu emanas.\nBendito seja o traço que o destino desenha agora,\ntransformando em poesia a força dessa alma que se torna soberana.";
+        
+        const p2 = "Não uso mais ossos ou sangue para firmar este registro,\nuso as sombras que vencemos e a luz que aprendeste a carregar.\nTu és o código mais raro, o verso mais legítimo,\no único alicerce que o tempo jamais poderá derrubar.";
 
-        const poem = "O tempo é um artesão silencioso,\ne hoje ele esculpe em ti um novo brilho.\nNão és mais apenas a pequena que eu vi crescer,\nmas a jovem que começa a trilhar o seu próprio trilho.\n\nQue a coragem seja a tua bússola,\ne que o afeto que nos une seja a tua proteção.\nSigo aqui, como sempre estive,\nguardando os teus passos no fundo do coração.";
+        const p3 = "Este é o meu voto, gravado no núcleo deste sistema:\nSerei o teu escudo quando o mundo parecer um abismo profundo.\nO teu crescimento é a minha paz, a tua vida é o meu maior tema,\nSou o vigia dos teus passos até ao fim de cada segundo.";
 
         function nextStep(step) {
-            window.scrollTo({ top: 0, behavior: 'smooth' }); // Volta ao topo do card na troca
+            // Esconde todos os passos e mostra o próximo
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step' + step).classList.add('active');
             
+            // Auto-scroll para o topo do contentor para melhor UX
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
             if (step === 2) {
-                typeWriter(document.getElementById('poemText'), poem, 40, () => {
-                    document.getElementById('btnStep2').style.display = 'inline-block';
+                // Digitação sequencial do Cap I e Cap II
+                typeWriter(document.getElementById('text1'), p1, 30, () => {
+                    document.getElementById('cap2-area').style.display = 'block';
+                    typeWriter(document.getElementById('text2'), p2, 30, () => {
+                        document.getElementById('btnStep2').style.display = 'inline-block';
+                    });
+                });
+            } else if (step === 3) {
+                // Digitação do Cap III
+                typeWriter(document.getElementById('text3'), p3, 30, () => {
+                    document.getElementById('btnFinal').style.display = 'inline-block';
                 });
             }
         }
 
-        function typeWriter(el, text, speed, callback) {
+        // Função de efeito "Máquina de Escrever"
+        function typeWriter(el, text, speed, cb) {
             let i = 0;
             el.innerHTML = "";
             function type() {
@@ -151,24 +222,35 @@
                     el.innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
                     i++;
                     setTimeout(type, speed);
-                } else if (callback) {
-                    callback();
+                } else if (cb) {
+                    cb();
                 }
             }
             type();
         }
 
+        // Explosão de confetes personalizada
         function celebrate() {
-            const count = 200;
-            const defaults = { origin: { y: 0.7 }, zIndex: 999 };
-            function fire(particleRatio, opts) {
-                confetti({ ...defaults, ...opts, particleCount: Math.floor(count * particleRatio) });
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
             }
-            fire(0.25, { spread: 26, startVelocity: 55 });
-            fire(0.2, { spread: 60 });
-            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
-            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-            fire(0.1, { spread: 120, startVelocity: 45 });
+
+            const interval = setInterval(function() {
+              const timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              const particleCount = 50 * (timeLeft / duration);
+              // Confetes vindos de posições aleatórias com as cores do tema
+              confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#d4af37', '#ffffff'] });
+              confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#d4af37', '#ffffff'] });
+            }, 250);
         }
     </script>
 </body>
